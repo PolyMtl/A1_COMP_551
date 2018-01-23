@@ -45,6 +45,7 @@ def calc_MSE(matrix,array_true, vector, regularization_coeff):
 		error = error + temp
 	
 	# 2 times error divided by number of datapoints
+	
 	MSE = 2*(error)/len(array_true)
 	return MSE
 

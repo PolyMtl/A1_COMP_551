@@ -58,14 +58,19 @@ def calc_MSE(matrix,array_true, vector, regularization_coeff):
 
 
 def GSD_Online(input_matrix,w_vector,output_true,alpha):
-	# MSE = calc_MSE(input_matrix,output_true,w_vector,0)
-	# print MSE
-	for i in range(len(output_true)):
-		w_vector[0] = w_vector[0] - (alpha) * ((np.dot(input_matrix[i].T,w_vector)) - output_true[i])
-		w_vector[1] = w_vector[1] - (alpha) * ((np.dot(input_matrix[i].T,w_vector)) - output_true[i]) * (input_matrix[i][1])
-		MSE = calc_MSE(input_matrix,output_true,w_vector,0)
-		print "mse-", i, ":	", MSE
-
+	MSE = []
+	num_epoch = 10000
+	for x in range(num_epoch):
+		for i in range(len(output_true)):
+			w_vector[0] = w_vector[0] - (alpha) * ((np.dot(input_matrix[i].T,w_vector)) - output_true[i])
+			w_vector[1] = w_vector[1] - (alpha) * ((np.dot(input_matrix[i].T,w_vector)) - output_true[i]) * (input_matrix[i][1])
+	
+		# print calc_MSE(input_matrix,output_true,w_vector,0)
+		MSE.append(calc_MSE(input_matrix,output_true,w_vector,0))
+	
+	# print w_vector
+	# print len(MSE)
+	return MSE
 
 if __name__ == "__main__":
 	# getting training set
@@ -80,6 +85,19 @@ if __name__ == "__main__":
         output_train_D2 = csv_reader(f_obj)
 
 
+    csv_path_valid_D2 = "Dataset_2_valid_input.csv"
+    input_valid_D2 = []
+    with open(csv_path_valid_D2,"rb") as f_obj:
+    	input_valid_D2 = csv_reader(f_obj)
+    
+    csv_path_valid_D2 = "Dataset_2_valid_output.csv"
+    output_valid_D2 = []
+    with open(csv_path_valid_D2,"rb") as f_obj:
+    	output_valid_D2 = csv_reader(f_obj)
+
+    
+
+
     # start with some w vector
     w_D2 = np.random.random((2,1))
     # print w_D2
@@ -88,11 +106,16 @@ if __name__ == "__main__":
     num_coeff_D2 = 2
     # create X matrix
     x_train_D2 = np.array(create_input_matrix(input_train_D2,num_coeff_D2))
-    # print np.array(x_train_D2[0])
+    x_valid_D2 = np.array(create_input_matrix())
 
-    GSD_Online(x_train_D2,w_D2,output_train_D2,10**(-0.5))
+    MSE_array_train = np.array(GSD_Online(x_train_D2,w_D2,output_train_D2,10**(-6)))
+    MSE_array_valid = np.array(GSD_Online())
 
-    
+    # plot
+    # print MSE_array_train
 
+    z = np.arange(0,10000,1)
+    plt.scatter(z,MSE_array_train,color ='black')
 
+    plt.show()
 
