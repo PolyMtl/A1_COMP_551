@@ -84,7 +84,7 @@ if __name__ == "__main__":
     with open(csv_path_train_D2, "rb") as f_obj:
         output_train_D2 = csv_reader(f_obj)
 
-
+	# getting validation set
     csv_path_valid_D2 = "Dataset_2_valid_input.csv"
     input_valid_D2 = []
     with open(csv_path_valid_D2,"rb") as f_obj:
@@ -95,27 +95,28 @@ if __name__ == "__main__":
     with open(csv_path_valid_D2,"rb") as f_obj:
     	output_valid_D2 = csv_reader(f_obj)
 
-    
 
 
-    # start with some w vector
-    w_D2 = np.random.random((2,1))
-    # print w_D2
 
+    # start with some w vector for training
+    w_train_D2 = np.random.random((2,1))
+    w_valid_D2 = np.random.random((2,1))
     # linear regression, so 2 coeff
     num_coeff_D2 = 2
     # create X matrix
     x_train_D2 = np.array(create_input_matrix(input_train_D2,num_coeff_D2))
-    x_valid_D2 = np.array(create_input_matrix())
+    x_valid_D2 = np.array(create_input_matrix(input_valid_D2,num_coeff_D2))
 
-    MSE_array_train = np.array(GSD_Online(x_train_D2,w_D2,output_train_D2,10**(-6)))
-    MSE_array_valid = np.array(GSD_Online())
-
+    learning_rate = 10**(-6)
+    MSE_array_train = np.array(GSD_Online(x_train_D2,w_train_D2,output_train_D2,learning_rate))
+    MSE_array_valid = np.array(GSD_Online(x_valid_D2,w_valid_D2,output_valid_D2,learning_rate))
+    # print "train vector:	", w_train_D2
+    # print "valid vector:	", w_valid_D2
     # plot
     # print MSE_array_train
 
     z = np.arange(0,10000,1)
     plt.scatter(z,MSE_array_train,color ='black')
-
-    plt.show()
+    plt.scatter(z,MSE_array_valid,color ='green')
+    # plt.show()
 
