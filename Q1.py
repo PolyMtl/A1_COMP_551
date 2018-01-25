@@ -198,3 +198,18 @@ if __name__ == "__main__":
 	Test_MSE = calc_MSE(x_test_D1,output_test_D1,w_best,best_lamda)
 	# print Test_MSE
 
+	# ***** plotting best reg w vector polynomial on test set *****
+	# plt.scatter(input_test_D1,output_test_D1,color='black', label = 'Test set')	
+	# plt.axis([-1.5, 1.5, -20, 45])
+	# flipped_w_best = np.array(np.flipud(w_best)) # creating a function out of the optimal w 
+	# poly_train = np.poly1d((np.squeeze(flipped_w_best)))
+	# z = np.linspace(-1,1,1000)
+	# out_test = poly_train(z)
+	# plt.plot(z,out_test, label = '20 deg polynomial fit')
+	# plt.axis([-1.5, 1.5, -20, 45])
+	# plt.ylabel('Output')
+	# plt.xlabel('Input')
+	# plt.legend()
+	# plt.text(0.0,20,r'MSE : $ 12.8398882837 $')
+	# plt.title('20 Degree polynomial on Test set')
+	# plt.show()
