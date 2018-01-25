@@ -110,7 +110,7 @@ if __name__ == "__main__":
 	# ((inverse of x_train_D1 transpose x_train_D1 ) times x_train_D1 transpose ) times output
 	w_D1 = np.array(np.dot(np.dot(np.linalg.inv(np.dot(x_train_D1.T,x_train_D1)),x_train_D1.T),output_train_D1))
 
-	
+
 	# ***** plotting training set ******
 	# plt.scatter(input_train_D1,output_train_D1,color='black')	
 	# plt.axis([-1.5, 1.5, -20, 45])
@@ -212,4 +212,19 @@ if __name__ == "__main__":
 	# plt.legend()
 	# plt.text(0.0,20,r'MSE : $ 12.8398882837 $')
 	# plt.title('20 Degree polynomial on Test set')
+	# plt.show()
+
+	# try different degree fits
+	MSE_per_degree = []
+	# j = 2
+	num_degrees = np.linspace(0,22,22)
+	for j in range(len(num_degrees)):
+		x_matrix = np.array(create_input_matrix(input_test_D1,j))
+		w = np.array(np.dot(np.dot(np.linalg.inv(np.dot(x_matrix.T,x_matrix)),x_matrix.T),output_test_D1))
+		MSE_per_degree.append(calc_MSE(x_matrix,output_test_D1,w,0.002))
+	
+	# plotting MSE for different degree polynomial
+	# print MSE_per_degree
+	# plt.plot(num_degrees,MSE_per_degree)
+	# plt.axis([0,22,6,100])
 	# plt.show()
