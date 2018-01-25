@@ -50,30 +50,6 @@ def calc_MSE(matrix,array_true, vector, regularization_coeff):
 	MSE = (error)
 	return MSE
 
-# # varies regularization coeff from 0 to lamda (10 values (arbitrary))
-# def vary_array(regularization_coeff, num_lamda_values):
-	
-# 	x = float(regularization_coeff/num_lamda_values)
-# 	array = []
-# 	for i in range(int(num_lamda_values)):
-# 		# print x
-# 		array.append(i*x)
-
-# 	array.append(regularization_coeff)
-# 	return array
-
-# w_D1 transpose times w_D1
-# def calc_weight(vector):
-# 	weight = 0.0
-# 	for i in range(len(vector)):
-# 		weight += (vector[i])**2
-
-# 	return weight
-
-
-
-
-
 
 
 	# ************************** # 
@@ -108,7 +84,6 @@ if __name__ == "__main__":
 	# regularization coeff
 	regularization_coeff = 1.0
 
-
 	# input matrix for train set
 	x_train_D1 = np.array(create_input_matrix(input_train_D1,num_coeff_D1))
 
@@ -116,33 +91,48 @@ if __name__ == "__main__":
 	x_valid_D1 = np.array(create_input_matrix(input_valid_D1,num_coeff_D1))
 	
 	# if no regularization
-	# calculate OPTIMAL coeff (w_D1 vector)
-	# x_train_D1 transpose 
-	# x_train_D1.T
-
-	# # x_train_D1 transpose times x
-	# w_D1 = np.array(np.dot(x_train_D1.T,x_train_D1))
-
-	# # inverse of x_train_D1 transpose * x_train_D1 
-	# w_D1 = np.array(np.linalg.inv(np.dot(x.T,x)))
-
-	# # (inverse of x_train_D1 transpose x_train_D1 ) times x_train_D1 transpose 
-	# w_D1= np.array(np.dot(np.linalg.inv(np.dot(x_train_D1.T,x_train_D1)),x_train_D1.T))
-
 	# ((inverse of x_train_D1 transpose x_train_D1 ) times x_train_D1 transpose ) times output
 	w_D1 = np.array(np.dot(np.dot(np.linalg.inv(np.dot(x_train_D1.T,x_train_D1)),x_train_D1.T),output_train_D1))
 
-	# WORK ON THIS!
-	# plotting
-	# flipped_w_D1 = np.array(np.flipud(w_D1))
-	# poly_train = np.poly1d((np.squeeze(flipped_w_D1)))
-	# plt.scatter(input_train_D1,output_train_D1,color='black')
-	# plt.scatter(input_valid_D1,output_valid_D1,color='blue')
-	# z = np.arange(-1,1,0.01)
-	# out_train = poly_train(z)
-	# plt.plot(z,out_train)
+	
+	# ***** plotting training set ******
+	# plt.scatter(input_train_D1,output_train_D1,color='black')	
 	# plt.axis([-1.5, 1.5, -20, 45])
+	# plt.ylabel('Output')
+	# plt.xlabel('Input')
+	# plt.title('Training set')
 	# plt.show()
+
+	# ***** plotting 20 degree fit on training set *****
+	# plt.scatter(input_train_D1,output_train_D1,color='black', label = 'Training set')
+	# flipped_w_D1 = np.array(np.flipud(w_D1)) # creating a function out of the optimal w 
+	# poly_train = np.poly1d((np.squeeze(flipped_w_D1)))
+	# z = np.linspace(-1,1,1000)	
+	# out_train = poly_train(z)
+	# plt.plot(z,out_train, label = '20 deg polynomial fit')
+	# plt.axis([-1.5, 1.5, -20, 45])
+	# plt.ylabel('Output')
+	# plt.xlabel('Input')
+	# plt.legend()
+	# plt.text(0.0,20,r'MSE : $ 6.47473441332 $')
+	# plt.title('20 Degree polynomial on Training set')
+	# plt.show()
+
+	# ***** plotting 20 degree fit on validation set *****
+	# plt.scatter(input_valid_D1,output_valid_D1,color='black', label = 'Validation set') # plotting validation set
+	# flipped_w_D1 = np.array(np.flipud(w_D1)) # creating a function out of the optimal w 
+	# poly_train = np.poly1d((np.squeeze(flipped_w_D1)))
+	# z = np.linspace(-1,1,1000)	
+	# out_valid = poly_train(z)
+	# plt.plot(z,out_valid, label = '20 deg polynomial fit')
+	# plt.axis([-1.5, 1.5, -20, 45])
+	# plt.ylabel('Output')
+	# plt.xlabel('Input')
+	# plt.legend()
+	# plt.text(0.0,20,r'MSE : $ 1412.30960654 $')
+	# plt.title('20 Degree polynomial on Validation set')
+	# plt.show()
+	
 
 	# calc MSE
 	# no regularization
@@ -155,43 +145,39 @@ if __name__ == "__main__":
 	# Q1.2
 	# _______________________________ #
 
-	# with regularization, optimal w_D1 is different
-	# num_lamda_values = number of different lamdas to iterate over
-	# num_lamda_values = 10
+	# range of different lamda (reg coeff) values
 	lamda_array = np.linspace(0.000001,1,1000)
-	# vary_array(regularization_coeff,num_lamda_values)
-	# print lamda_array
-
-	# calc MSE for different lamda
+	
 	MSE_train_array = []
 	MSE_valid_array = []
-
+	# calc MSE for different lamda
 	for i in range(len(lamda_array)):
+	  # with regularization, optimal w_D1 is different
 	  w_reg = np.array(np.dot(np.dot(np.linalg.inv(np.add(np.dot(x_train_D1.T,x_train_D1), np.dot(lamda_array[i],np.eye(num_coeff_D1)))),x_train_D1.T), output_train_D1))
-	  # print w_reg
 	  MSE_train_array.append(calc_MSE(x_train_D1,output_train_D1,w_reg,lamda_array[i]))
 	  MSE_valid_array.append(calc_MSE(x_valid_D1,output_valid_D1,w_reg,lamda_array[i]))
 
-	
 	# print "MSE_train_array: \n", MSE_train_array
 	# print "MSE_valid_array: \n", MSE_valid_array
 
 
 	# WORK ON THIS!
 
-
+	plt.xlabel('Regularization coefficient')
+	plt.ylabel('Mean Square Error')
 	plt.plot(lamda_array, MSE_train_array, '-g', label = 'Training_MSE')
 	plt.plot(lamda_array,MSE_valid_array, '-k', label = 'Validation_MSE')
 	plt.xlim(-0.1,1.1)
+	plt.title('Regularization coefficient vs MSE')
 	plt.legend()
 	plt.show()
 
 	# picking best value of lamda
 	best_MSE = min(MSE_valid_array)
-	print best_MSE
+	# print best_MSE
 	best_lamda = lamda_array[MSE_valid_array.index(best_MSE)]
 	# (np.ay(MSE_valid_array).argmin())*(float(1.0/len(lamda_array)))
-	print best_lamda
+	# print best_lamda
 	w_best = np.array(np.dot(np.dot(np.linalg.inv(np.add(np.dot(x_train_D1.T,x_train_D1), np.dot(best_lamda,np.eye(num_coeff_D1)))),x_train_D1.T), output_train_D1))
 
 	# flipped_w_best = np.array(np.flipud(w_best))
