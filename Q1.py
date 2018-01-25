@@ -79,6 +79,19 @@ if __name__ == "__main__":
 	with open(csv_path_valid_D1, "rb") as f_obj:
 		output_valid_D1 = csv_reader(f_obj) 
 
+	# getting test set
+	csv_path_test_D1 = "Dataset_1_test_input.csv"
+	input_test_D1 = []
+	output_test_D1 = []
+	with open(csv_path_test_D1, "rb") as f_obj:
+		input_test_D1 = csv_reader(f_obj)
+
+	csv_path_test_D1 = "Dataset_1_test_output.csv"
+	with open(csv_path_test_D1, "rb") as f_obj:
+		output_test_D1 = csv_reader(f_obj)
+
+
+
 	# 20 degree poly
 	num_coeff_D1 = 21 
 	# regularization coeff
@@ -89,6 +102,9 @@ if __name__ == "__main__":
 
 	# input matrix for valid set
 	x_valid_D1 = np.array(create_input_matrix(input_valid_D1,num_coeff_D1))
+
+	# input matrix for test set
+	x_test_D1 = np.array(create_input_matrix(input_test_D1,num_coeff_D1))
 	
 	# if no regularization
 	# ((inverse of x_train_D1 transpose x_train_D1 ) times x_train_D1 transpose ) times output
@@ -161,28 +177,24 @@ if __name__ == "__main__":
 	# print "MSE_valid_array: \n", MSE_valid_array
 
 
-	# WORK ON THIS!
-
-	plt.xlabel('Regularization coefficient')
-	plt.ylabel('Mean Square Error')
-	plt.plot(lamda_array, MSE_train_array, '-g', label = 'Training_MSE')
-	plt.plot(lamda_array,MSE_valid_array, '-k', label = 'Validation_MSE')
-	plt.xlim(-0.1,1.1)
-	plt.title('Regularization coefficient vs MSE')
-	plt.legend()
-	plt.show()
+	# ***** plotting Regularization coefficient vs MSE *****
+	# plt.xlabel('Regularization coefficient')
+	# plt.ylabel('Mean Square Error')
+	# plt.plot(lamda_array, MSE_train_array, '-g', label = 'Training_MSE')
+	# plt.plot(lamda_array,MSE_valid_array, '-k', label = 'Validation_MSE')
+	# plt.xlim(-0.1,1.1)
+	# plt.title('Regularization coefficient vs MSE')
+	# plt.legend()
+	# plt.show()
 
 	# picking best value of lamda
 	best_MSE = min(MSE_valid_array)
 	# print best_MSE
 	best_lamda = lamda_array[MSE_valid_array.index(best_MSE)]
-	# (np.ay(MSE_valid_array).argmin())*(float(1.0/len(lamda_array)))
 	# print best_lamda
+	# corresponding w vector of best lamda
 	w_best = np.array(np.dot(np.dot(np.linalg.inv(np.add(np.dot(x_train_D1.T,x_train_D1), np.dot(best_lamda,np.eye(num_coeff_D1)))),x_train_D1.T), output_train_D1))
-
-	# flipped_w_best = np.array(np.flipud(w_best))
-	# poly_valid = np.poly1d((np.squeeze(flipped_w_best)))
-	# out_valid = poly_valid(z)
-	# plt.plot(z,out_valid)
-	# plt.show()
+	# MSE of test set with best lamda
+	Test_MSE = calc_MSE(x_test_D1,output_test_D1,w_best,best_lamda)
+	# print Test_MSE
 
