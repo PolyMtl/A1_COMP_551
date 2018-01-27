@@ -58,18 +58,6 @@ def calc_MSE(matrix,array_true, vector, regularization_coeff):
 	return MSE
 
 
-
-# def SGD_Online(input_matrix,w_train_D2,output_train_D2,learning_rate):
-# 	num_epoch = 10
-# 	w_per_epoch = []
-# 	for x in range(num_epoch):
-# 		for i in range(len(output_train_D2)):
-# 			w_train_D2[0] = w_train_D2[0] - (learning_rate) * ((np.dot(input_matrix[i].T,w_train_D2)) - output_train_D2[i])
-# 			w_train_D2[1] = w_train_D2[1] - (learning_rate) * ((np.dot(input_matrix[i].T,w_train_D2)) - output_train_D2[i]) * (input_matrix[i][1])
-
-	
-# 	return np.array(w_per_epoch)
-
 if __name__ == "__main__":
 	# getting training set
 	csv_path_train_D2 = "Dataset_2_train_input.csv"
@@ -103,12 +91,11 @@ if __name__ == "__main__":
 	x_valid_D2 = np.array(create_input_matrix(input_valid_D2,num_coeff_D2))
 
 	learning_rate = 10**(-6)
-	num_epoch = 10000
+	num_epoch = 100
 	MSE_array_train = []
 	MSE_array_valid = []
 
 	for x in range(num_epoch):
-		# print x
 		MSE_array_train.append(calc_MSE(x_train_D2,output_train_D2,w_train_D2,0))
 		MSE_array_valid.append(calc_MSE(x_valid_D2,output_valid_D2,w_train_D2,0))
 		for i in range(len(output_train_D2)):
@@ -117,13 +104,38 @@ if __name__ == "__main__":
 	
 	MSE_array_train = np.array(MSE_array_train)
 	MSE_array_valid = np.array(MSE_array_valid)
+
+	# ***** plotting epoch vs MSE for training and validation ***** 
+	# z = np.linspace(0,num_epoch,num_epoch)
+	# plt.scatter(z,MSE_array_train,color ='black', label = 'Training MSE')
+	# plt.scatter(z,MSE_array_valid,color ='green', label = 'validation MSE')
+	# plt.title('Epoch vs MSE')
+	# plt.xlabel('epoch')
+	# plt.ylabel('MSE')
+	# plt.legend()
+	# plt.show()
+
+	learning_rate_array = np.linspace(1e-8, 1, 100)
 	
-	z = np.linspace(0,num_epoch,num_epoch)
-	plt.scatter(z,MSE_array_train,color ='black', label = 'Training MSE')
-	plt.scatter(z,MSE_array_valid,color ='green', label = 'validation MSE')
-	plt.title('Epoch vs MSE')
-	plt.xlabel('epoch')
-	plt.ylabel('MSE')
-	plt.legend()
-	plt.show()
+	# b is the holds the SMALLEST validation error for each learning rate in the loop
+	b = []
+	for j in learning_rate_array:
+		# for each learning rate, create a list that holds validation error at the end of each epoch
+		c = []
+		for x in range(num_epoch):
+			for i in range(len(output_train_D2)):
+				w_train_D2[0] = w_train_D2[0] - (j) * ((np.dot(x_train_D2[i].T,w_train_D2)) - output_train_D2[i])
+				w_train_D2[1] = w_train_D2[1] - (j) * ((np.dot(x_train_D2[i].T,w_train_D2)) - output_train_D2[i]) * (x_train_D2[i][1])
+			# at end of each epoch, calculate validation error and put it in list
+			c.append(calc_MSE(x_valid_D2,output_valid_D2,w_train_D2,0))	
+		# add to b the SMALLEST (the last) element of c
+		b.append(min(c))	
+
+	b = np.array(b)
+	# print np.array(b)
+	print np.argmin(b)
+	print learning_rate_array[np.argmin(b)]
+	
+
+
 
