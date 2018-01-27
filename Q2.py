@@ -4,15 +4,15 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 def csv_reader(file_obj):
-    """
-    Read a csv file (input column and output column seperately)
-    """
-    data = []
-    reader = csv.reader(file_obj)
-    for x in reader:
-    	data.append(float(" ".join(x)))	
-    
-    return data
+	"""
+	Read a csv file (input column and output column seperately)
+	"""
+	data = []
+	reader = csv.reader(file_obj)
+	for x in reader:
+		data.append(float(" ".join(x)))	
+	
+	return data
 
 def create_input_matrix(array, size_W):
 	matrix = np.zeros((len(array),size_W))
@@ -21,10 +21,12 @@ def create_input_matrix(array, size_W):
 	for i in range(size_W):
 		power.append(i)
 
+	# print power
 	for x in range(len(array)):
 		matrix [x] = np.full((1,size_W),array[x])
 		matrix [x] = np.power(matrix[x],power)
 
+	# print np.array(matrix)
 	return matrix
 
 def calc_weight(vector):
@@ -57,66 +59,71 @@ def calc_MSE(matrix,array_true, vector, regularization_coeff):
 
 
 
-def GSD_Online(input_matrix,w_vector,output_true,alpha):
-	MSE = []
-	num_epoch = 10000
-	for x in range(num_epoch):
-		for i in range(len(output_true)):
-			w_vector[0] = w_vector[0] - (alpha) * ((np.dot(input_matrix[i].T,w_vector)) - output_true[i])
-			w_vector[1] = w_vector[1] - (alpha) * ((np.dot(input_matrix[i].T,w_vector)) - output_true[i]) * (input_matrix[i][1])
+# def SGD_Online(input_matrix,w_train_D2,output_train_D2,learning_rate):
+# 	num_epoch = 10
+# 	w_per_epoch = []
+# 	for x in range(num_epoch):
+# 		for i in range(len(output_train_D2)):
+# 			w_train_D2[0] = w_train_D2[0] - (learning_rate) * ((np.dot(input_matrix[i].T,w_train_D2)) - output_train_D2[i])
+# 			w_train_D2[1] = w_train_D2[1] - (learning_rate) * ((np.dot(input_matrix[i].T,w_train_D2)) - output_train_D2[i]) * (input_matrix[i][1])
+
 	
-		# print calc_MSE(input_matrix,output_true,w_vector,0)
-		MSE.append(calc_MSE(input_matrix,output_true,w_vector,0))
-	
-	# print w_vector
-	# print len(MSE)
-	return MSE
+# 	return np.array(w_per_epoch)
 
 if __name__ == "__main__":
 	# getting training set
-    csv_path_train_D2 = "Dataset_2_train_input.csv"
-    input_train_D2 = []
-    with open(csv_path_train_D2, "rb") as f_obj:
-        input_train_D2 = csv_reader(f_obj)
+	csv_path_train_D2 = "Dataset_2_train_input.csv"
+	input_train_D2 = []
+	with open(csv_path_train_D2, "rb") as f_obj:
+		input_train_D2 = csv_reader(f_obj)
 
-    csv_path_train_D2 = "Dataset_2_train_output.csv" 
-    output_train_D2 = []
-    with open(csv_path_train_D2, "rb") as f_obj:
-        output_train_D2 = csv_reader(f_obj)
+	csv_path_train_D2 = "Dataset_2_train_output.csv" 
+	output_train_D2 = []
+	with open(csv_path_train_D2, "rb") as f_obj:
+		output_train_D2 = csv_reader(f_obj)
 
 	# getting validation set
-    csv_path_valid_D2 = "Dataset_2_valid_input.csv"
-    input_valid_D2 = []
-    with open(csv_path_valid_D2,"rb") as f_obj:
-    	input_valid_D2 = csv_reader(f_obj)
-    
-    csv_path_valid_D2 = "Dataset_2_valid_output.csv"
-    output_valid_D2 = []
-    with open(csv_path_valid_D2,"rb") as f_obj:
-    	output_valid_D2 = csv_reader(f_obj)
+	csv_path_valid_D2 = "Dataset_2_valid_input.csv"
+	input_valid_D2 = []
+	with open(csv_path_valid_D2,"rb") as f_obj:
+		input_valid_D2 = csv_reader(f_obj)
+	
+	csv_path_valid_D2 = "Dataset_2_valid_output.csv"
+	output_valid_D2 = []
+	with open(csv_path_valid_D2,"rb") as f_obj:
+		output_valid_D2 = csv_reader(f_obj)
 
 
+	# start with some w vector for training
+	w_train_D2 = np.random.random((2,1))
+	# linear regression, so 2 coeff
+	num_coeff_D2 = 2
+	# create X matrix
+	x_train_D2 = np.array(create_input_matrix(input_train_D2,num_coeff_D2))
+	x_valid_D2 = np.array(create_input_matrix(input_valid_D2,num_coeff_D2))
 
+	learning_rate = 10**(-6)
+	num_epoch = 10000
+	MSE_array_train = []
+	MSE_array_valid = []
 
-    # start with some w vector for training
-    w_train_D2 = np.random.random((2,1))
-    w_valid_D2 = np.random.random((2,1))
-    # linear regression, so 2 coeff
-    num_coeff_D2 = 2
-    # create X matrix
-    x_train_D2 = np.array(create_input_matrix(input_train_D2,num_coeff_D2))
-    x_valid_D2 = np.array(create_input_matrix(input_valid_D2,num_coeff_D2))
-
-    learning_rate = 10**(-6)
-    MSE_array_train = np.array(GSD_Online(x_train_D2,w_train_D2,output_train_D2,learning_rate))
-    MSE_array_valid = np.array(GSD_Online(x_valid_D2,w_valid_D2,output_valid_D2,learning_rate))
-    # print "train vector:	", w_train_D2
-    # print "valid vector:	", w_valid_D2
-    # plot
-    # print MSE_array_train
-
-    z = np.arange(0,10000,1)
-    plt.scatter(z,MSE_array_train,color ='black')
-    plt.scatter(z,MSE_array_valid,color ='green')
-    # plt.show()
+	for x in range(num_epoch):
+		# print x
+		MSE_array_train.append(calc_MSE(x_train_D2,output_train_D2,w_train_D2,0))
+		MSE_array_valid.append(calc_MSE(x_valid_D2,output_valid_D2,w_train_D2,0))
+		for i in range(len(output_train_D2)):
+			w_train_D2[0] = w_train_D2[0] - (learning_rate) * ((np.dot(x_train_D2[i].T,w_train_D2)) - output_train_D2[i])
+			w_train_D2[1] = w_train_D2[1] - (learning_rate) * ((np.dot(x_train_D2[i].T,w_train_D2)) - output_train_D2[i]) * (x_train_D2[i][1])
+	
+	MSE_array_train = np.array(MSE_array_train)
+	MSE_array_valid = np.array(MSE_array_valid)
+	
+	z = np.linspace(0,num_epoch,num_epoch)
+	plt.scatter(z,MSE_array_train,color ='black', label = 'Training MSE')
+	plt.scatter(z,MSE_array_valid,color ='green', label = 'validation MSE')
+	plt.title('Epoch vs MSE')
+	plt.xlabel('epoch')
+	plt.ylabel('MSE')
+	plt.legend()
+	plt.show()
 
