@@ -90,11 +90,12 @@ if __name__ == "__main__":
 	x_train_D2 = np.array(create_input_matrix(input_train_D2,num_coeff_D2))
 	x_valid_D2 = np.array(create_input_matrix(input_valid_D2,num_coeff_D2))
 
-	learning_rate = 10**(-6)
+	learning_rate = 10**(-2)
 	num_epoch = 100
 	MSE_array_train = []
 	MSE_array_valid = []
 
+	# 2.1
 	for x in range(num_epoch):
 		MSE_array_train.append(calc_MSE(x_train_D2,output_train_D2,w_train_D2,0))
 		MSE_array_valid.append(calc_MSE(x_valid_D2,output_valid_D2,w_train_D2,0))
@@ -115,6 +116,7 @@ if __name__ == "__main__":
 	# plt.legend()
 	# plt.show()
 
+	# 2.2
 	learning_rate_array = np.linspace(1e-8, 1, 100)
 	
 	# b is the holds the SMALLEST validation error for each learning rate in the loop
@@ -132,10 +134,64 @@ if __name__ == "__main__":
 		b.append(min(c))	
 
 	b = np.array(b)
-	# print np.array(b)
-	print np.argmin(b)
-	print learning_rate_array[np.argmin(b)]
+	best_learning_rate = learning_rate_array[np.argmin(b)]
+
+
+	# 2.3
+	w_array = []
+	for x in range(num_epoch):
+		if(x == 0 or x == 5 or x == 10 or x == 15 or x == 40):
+			w_array.append(np.array(w_train_D2))
+		
+		for i in range(len(output_train_D2)):
+			w_train_D2[0] = w_train_D2[0] - (learning_rate) * ((np.dot(x_train_D2[i].T,w_train_D2)) - output_train_D2[i])
+			w_train_D2[1] = w_train_D2[1] - (learning_rate) * ((np.dot(x_train_D2[i].T,w_train_D2)) - output_train_D2[i]) * (x_train_D2[i][1])
+
+	w_array = np.array(w_array)
+
+	# creating polynomials for 5 w vectors to plot
+	flip_w1 = np.array(np.flipud(w_array[0]))
+	poly_w1 = np.poly1d((np.squeeze(flip_w1)))
+	print poly_w1
+	flip_w2 = np.array(np.flipud(w_array[1]))
+	poly_w2 = np.poly1d((np.squeeze(flip_w2)))
+	print poly_w2
+	flip_w3 = np.array(np.flipud(w_array[2]))
+	poly_w3 = np.poly1d((np.squeeze(flip_w3)))
+	print poly_w3
+	flip_w4 = np.array(np.flipud(w_array[3]))
+	poly_w4 = np.poly1d((np.squeeze(flip_w4)))
+	print poly_w4
+	flip_w5 = np.array(np.flipud(w_array[4]))
+	poly_w5 = np.poly1d((np.squeeze(flip_w5)))
+	print poly_w5
 	
+	z = np.linspace(0,2,10)
+	out_poly_w1 = poly_w1(z)
+	out_poly_w2 = poly_w2(z)
+	out_poly_w3 = poly_w3(z)
+	out_poly_w4 = poly_w4(z)
+	out_poly_w5 = poly_w5(z)
+
+
+	# ***** plotting 5 curves to show evolution of regression *****
+	# plt.scatter(input_train_D2,output_train_D2, color = 'black', label = 'Actual')
+	# plt.plot(z,out_poly_w1, color = 'green', label = 'W1: y = 0.03598 x + 0.5007')
+	# plt.title('W1 on training set')
+	# plt.plot(z,out_poly_w2, color = 'blue', label = 'W2: 4.113 x + 3.765')
+	# plt.title('W2 on training set')
+	# plt.plot(z,out_poly_w3, color = 'yellow', label = 'W3: 4.281 x + 3.626')
+	# plt.title('W3 on training set')
+	# plt.plot(z,out_poly_w4, color = 'orange', label = 'W4: 4.316 x + 3.597')
+	# plt.title('W4 on training set')
+	# plt.plot(z,out_poly_w5, color = 'pink', label = 'W5: 4.325 x + 3.589')
+	# plt.title('W5 on training set')
+	# plt.legend()
+	# plt.xlabel('input')
+	# plt.ylabel('output')
+	# plt.show()
+
+
 
 
 
