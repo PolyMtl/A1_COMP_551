@@ -28,6 +28,19 @@ def fill_missing_values(df):
 
 	return df
 
+def create_input_matrix(dataset):
+	# adding a column of ones
+	dataset.insert(0,'',1)
+	dataset.column = [np.arange(0, dataset.shape[1])]
+	dataset = dataset.drop(dataset.index[123])
+	# convert to array for ease of use
+	dataset =  np.array(dataset)
+	return dataset
+
+def create_output_vector(dataset):
+	dataset = dataset[126]
+	return np.array(dataset)
+
 
 if __name__ == "__main__":
 	# 3.1
@@ -107,5 +120,25 @@ if __name__ == "__main__":
 	convert_to_csv(r'/Users/vivek/git/COMP_551_A1/Datasets/CandC_test_5.csv', test_set_5)
 
 	# 3.2 perform linear regression (SGD)
+	# create input matrix
+	x_matrix = create_input_matrix(training_set_1)
+	# create output array
+	output_actual = create_output_vector(training_set_1)
+	# print output_actual
+	print x_matrix.shape
+	print len(x_matrix)
+	# for i in range(len(x_matrix)):
+	# 	print x_matrix[i][1]
+
+	# create random inital w_vector (123 features, 124 coefficients)
+	# init_w_vector = np.random.random((124,1))
+	# print x_matrix.shape
+	# w_vector = np.dot(np.dot(np.linalg.inv(np.dot(x_matrix.T,x_matrix)),x_matrix.T),output_actual)
+	# w_vector = np.dot(np.dot(np.linalg.inv(np.dot(x_matrix.T,x_matrix)),x_matrix.T),output_actual)
+
+	# print w_vector.shape
+
+
+
 
 

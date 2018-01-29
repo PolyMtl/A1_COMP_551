@@ -189,9 +189,9 @@ if __name__ == "__main__":
 
 	# picking best value of lamda
 	best_MSE = min(MSE_valid_array)
-	# print best_MSE
+	print best_MSE
 	best_lamda = lamda_array[MSE_valid_array.index(best_MSE)]
-	# print best_lamda
+	print best_lamda
 	# corresponding w vector of best lamda
 	w_best = np.array(np.dot(np.dot(np.linalg.inv(np.add(np.dot(x_train_D1.T,x_train_D1), np.dot(best_lamda,np.eye(num_coeff_D1)))),x_train_D1.T), output_train_D1))
 	# MSE of test set with best lamda

@@ -60,7 +60,7 @@ def calc_MSE(matrix,array_true, vector, regularization_coeff):
 def SGD_online(w_vector,input_matrix,output_true,learning_rate):
 	# print "int w:	",np.array(w_vector)
 	# print "init error", calc_MSE(input_matrix,output_true,w_vector,0)
-	num_epoch = 100
+	num_epoch = 10000
 	w_vector_per_epoch = []
 	for i in range(num_epoch):
 		w_vector_per_epoch.append(np.array(w_vector))
@@ -139,27 +139,16 @@ if __name__ == "__main__":
 	print "target_MSE:	", lowest_MSE
 
 	# plot
-	# num_epoch = 10000
-	# z = np.linspace(0,num_epoch,num_epoch)
-	# plt.scatter(z,MSE_per_epoch_training,linestyle = '-', label = 'Training MSE')
-	# plt.scatter(z,MSE_per_epoch_validation,linestyle = '--', label = 'validation MSE')
-	# plt.title('Epoch vs MSE')
-	# plt.xlabel('epoch')
-	# plt.ylabel('MSE')
-	# plt.legend()
-	# plt.show()
+	num_epoch = 10000
+	z = np.linspace(0,num_epoch,num_epoch)
+	plt.scatter(z,MSE_per_epoch_training,linestyle = '-', label = 'Training MSE')
+	plt.scatter(z,MSE_per_epoch_validation,linestyle = '--', label = 'validation MSE')
+	plt.title('Epoch vs MSE')
+	plt.xlabel('epoch')
+	plt.ylabel('MSE')
+	plt.legend()
+	plt.show()
 
-	# 2.2
-	# test_learning_rate = np.linspace(1e-8, 1, 100)
-	test_learning_rate = [1e-6, 1e-5, 1e-4, 1e-3, 1e-2, 1e-1]
-	# print test_learning_rate
-	Epoch_count = []
-	for j in test_learning_rate:
-		# print "everywhere:	", init_w_vector
-		print "learning_rate:	",j
-		Epoch_count.append(SGD_online_2(init_w_vector,x_valid_D2,output_valid_D2,j,5))	
-	
-	print Epoch_count
 
 
 
