@@ -60,23 +60,23 @@ def calc_MSE(matrix,array_true, vector, regularization_coeff):
 
 if __name__ == "__main__":
 	# getting training set
-	csv_path_train_D2 = "Dataset_2_train_input.csv"
+	csv_path_train_D2 ='/Users/vivek/git/COMP_551_A1/Datasets/Dataset_2_train_input.csv'
 	input_train_D2 = []
 	with open(csv_path_train_D2, "rb") as f_obj:
 		input_train_D2 = csv_reader(f_obj)
 
-	csv_path_train_D2 = "Dataset_2_train_output.csv" 
+	csv_path_train_D2 = '/Users/vivek/git/COMP_551_A1/Datasets/Dataset_2_train_output.csv'
 	output_train_D2 = []
 	with open(csv_path_train_D2, "rb") as f_obj:
 		output_train_D2 = csv_reader(f_obj)
 
 	# getting validation set
-	csv_path_valid_D2 = "Dataset_2_valid_input.csv"
+	csv_path_valid_D2 = '/Users/vivek/git/COMP_551_A1/Datasets/Dataset_2_valid_input.csv'
 	input_valid_D2 = []
 	with open(csv_path_valid_D2,"rb") as f_obj:
 		input_valid_D2 = csv_reader(f_obj)
 	
-	csv_path_valid_D2 = "Dataset_2_valid_output.csv"
+	csv_path_valid_D2 = '/Users/vivek/git/COMP_551_A1/Datasets/Dataset_2_valid_output.csv'
 	output_valid_D2 = []
 	with open(csv_path_valid_D2,"rb") as f_obj:
 		output_valid_D2 = csv_reader(f_obj)
@@ -152,19 +152,19 @@ if __name__ == "__main__":
 	# creating polynomials for 5 w vectors to plot
 	flip_w1 = np.array(np.flipud(w_array[0]))
 	poly_w1 = np.poly1d((np.squeeze(flip_w1)))
-	print poly_w1
+	# print poly_w1
 	flip_w2 = np.array(np.flipud(w_array[1]))
 	poly_w2 = np.poly1d((np.squeeze(flip_w2)))
-	print poly_w2
+	# print poly_w2
 	flip_w3 = np.array(np.flipud(w_array[2]))
 	poly_w3 = np.poly1d((np.squeeze(flip_w3)))
-	print poly_w3
+	# print poly_w3
 	flip_w4 = np.array(np.flipud(w_array[3]))
 	poly_w4 = np.poly1d((np.squeeze(flip_w4)))
-	print poly_w4
+	# print poly_w4
 	flip_w5 = np.array(np.flipud(w_array[4]))
 	poly_w5 = np.poly1d((np.squeeze(flip_w5)))
-	print poly_w5
+	# print poly_w5
 	
 	z = np.linspace(0,2,10)
 	out_poly_w1 = poly_w1(z)

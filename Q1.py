@@ -58,35 +58,35 @@ if __name__ == "__main__":
 	# Q1.1
 	# _______________________________ #
 	# getting traning set
-	csv_path_train_D1 = "Dataset_1_train_input.csv"
+	csv_path_train_D1 = '/Users/vivek/git/COMP_551_A1/Datasets/Dataset_1_train_input.csv'
 	input_train_D1 = []
 	output_train_D1 = []
 	with open(csv_path_train_D1, "rb") as f_obj:
 		input_train_D1 = csv_reader(f_obj)
 
-	csv_path_train_D1 = "Dataset_1_train_output.csv"
+	csv_path_train_D1 = '/Users/vivek/git/COMP_551_A1/Datasets/Dataset_1_train_output.csv'
 	with open(csv_path_train_D1, "rb") as f_obj:
 		output_train_D1 = csv_reader(f_obj)
 
 	# getting validation set
-	csv_path_valid_D1 = "Dataset_1_valid_input.csv"
+	csv_path_valid_D1 = '/Users/vivek/git/COMP_551_A1/Datasets/Dataset_1_valid_input.csv'
 	input_valid_D1 = []
 	output_valid_D1 = []
 	with open(csv_path_valid_D1, "rb") as f_obj:
 		input_valid_D1 = csv_reader(f_obj)
 
-	csv_path_valid_D1 = "Dataset_1_valid_output.csv"
+	csv_path_valid_D1 = '/Users/vivek/git/COMP_551_A1/Datasets/Dataset_1_valid_output.csv'
 	with open(csv_path_valid_D1, "rb") as f_obj:
 		output_valid_D1 = csv_reader(f_obj) 
 
 	# getting test set
-	csv_path_test_D1 = "Dataset_1_test_input.csv"
+	csv_path_test_D1 = '/Users/vivek/git/COMP_551_A1/Datasets/Dataset_1_test_input.csv'
 	input_test_D1 = []
 	output_test_D1 = []
 	with open(csv_path_test_D1, "rb") as f_obj:
 		input_test_D1 = csv_reader(f_obj)
 
-	csv_path_test_D1 = "Dataset_1_test_output.csv"
+	csv_path_test_D1 = '/Users/vivek/git/COMP_551_A1/Datasets/Dataset_1_test_output.csv'
 	with open(csv_path_test_D1, "rb") as f_obj:
 		output_test_D1 = csv_reader(f_obj)
 
