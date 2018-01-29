@@ -39,7 +39,7 @@ if __name__ == "__main__":
 	# convert the new dataset into csv
 	convert_to_csv(r'/Users/vivek/git/COMP_551_A1/Datasets/Dataset_3_modified.csv', df_modified)
 
-	# 3.2
+	# 3.2 (80-20 datasplits)
 	# create a training dataset (80% of whole dataset)
 	training_set_1 = df_modified.sample(frac = 0.8, random_state = 100)
 	# remaining is test set
@@ -106,22 +106,6 @@ if __name__ == "__main__":
 	convert_to_csv(r'/Users/vivek/git/COMP_551_A1/Datasets/CandC_train_5.csv', training_set_5)
 	convert_to_csv(r'/Users/vivek/git/COMP_551_A1/Datasets/CandC_test_5.csv', test_set_5)
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-	
-
+	# 3.2 perform linear regression (SGD)
 
 
